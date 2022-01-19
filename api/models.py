@@ -1,4 +1,3 @@
-from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -15,5 +14,5 @@ class Task(models.Model):
 
     class Meta:
         # order it by complete, finished items will be at the bottom
-        ordering = ['complete']
+        order_with_respect_to = 'user'
 

@@ -15,20 +15,26 @@
 
 <div id="search-add-wrapper">
     <form method="GET" style="margin-top:20px;display: flex;">
-        <input type='text' name='search-area' placeholder="Search your task" value="{{search_input}}">
-        <input class="button" type="submit" value='Search'>
+        <input class="textbox" type='text' name='search-area' placeholder="Search your task" value="{{search_input}}">
+        <input class="button" type="submit" value='Search' >
     </form>
     {% if tasks|length > 0 %}
-    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+    <a id="add-link" href="{% url 'task-create' %}">
+        <div class="add">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+              </svg>
+        </div>
+    </a>
     {% endif %}
 </div>
 
 
 <!-- Hidden form. Form submits new item positions -->
-{% comment %} <form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
+<form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
     {% csrf_token %}
     <input type="hidden" id="positionInput" name="position">
-</form> {% endcomment %}
+</form>
 
 
 <div id="tasklist" class="task-items-wrapper">
@@ -42,8 +48,20 @@
             <a href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
         </div>
         <div class="task-controls">
-            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
+            <a class="delete-link" href="{% url 'task-delete' task.id %}"> 
+                <div class="pp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash2" viewBox="0 0 16 16">
+                        <path d="M14 3a.702.702 0 0 1-.037.225l-1.684 10.104A2 2 0 0 1 10.305 15H5.694a2 2 0 0 1-1.973-1.671L2.037 3.225A.703.703 0 0 1 2 3c0-1.105 2.686-2 6-2s6 .895 6 2zM3.215 4.207l1.493 8.957a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836l1.493-8.957C11.69 4.689 9.954 5 8 5c-1.954 0-3.69-.311-4.785-.793z"/>
+                      </svg>
+                </div>
+            </a>
+            <span class="handle">
+                <div class="cursor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-move" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z"/>
+                      </svg>
+                </div>
+            </span>
         </div>
     </div>
 
@@ -54,7 +72,7 @@
     </div>
     {% endfor %}
 </div>
-{% comment %} 
+
 <script>
     var taskList = document.getElementById("tasklist");
     var reorderForm = document.getElementById("reorderForm");
@@ -79,6 +97,10 @@
     }
 
     document.ondrop = reordering
-</script> {% endcomment %}
+</script>
+
 
 {% endblock content %}
+
+
+{% comment %} &#215; {% endcomment %}
