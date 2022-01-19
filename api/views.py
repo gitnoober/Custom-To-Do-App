@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect,render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView, FormView
@@ -9,12 +9,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
+from django.contrib import messages
 
 
 from django.views import View
 from django.db import transaction
 from .models import Task
 from .forms import PositionForm
+
+
+
 
 class CustomLoginView(LoginView):
     template_name = 'api/login.html'
@@ -34,6 +38,7 @@ class RegisterPage(FormView):
 
     def form_valid(self, form):
         user = form.save()
+        messages.success(self.request, 'Your account has been created!')
         if user is not None:
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
@@ -109,3 +114,9 @@ class TaskReorder(View):
                 self.request.user.set_task_order(positionList)
 
         return redirect(reverse_lazy('tasks'))
+
+
+
+def check_registration(request):
+    context = {'foo':'bar'}
+    return render(request,'task_list.html', context)

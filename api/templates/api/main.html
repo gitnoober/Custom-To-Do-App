@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="description"
-        content="This is to do list implemented using Django by Dennis Ivy who is a full stack web developer.">
+        content="This is a to do list implemented using Django.">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>To Do Items</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap" rel="stylesheet">
@@ -65,6 +67,12 @@
             background-color: #fff;
             -webkit-box-shadow: 2px 2px 13px -4px rgba(0, 0, 0, 0.21);
             box-shadow: 2px 2px 13px -4px rgba(0, 0, 0, 0.21);
+        }
+
+        .mt{
+            position:fixed;
+            z-index: 999;
+            margin-bottom:5px;
         }
 
         input {
@@ -234,18 +242,79 @@
             outline: none; 
             height:25px; 
             width: 275px; 
-           } 
+        } 
+
+        .alert{
+        width:50%;
+        margin:10px auto;
+        padding:30px;
+        position:relative;
+        border-radius:5px;
+        box-shadow:0 0 15px 5px #ccc;
+        }
+        .close{
+        position:absolute;
+        width:30px;
+        height:30px;
+        opacity:0.5;
+        border-width:1px;
+        border-style:solid;
+        border-radius:50%;
+        right:15px;
+        top:25px;
+        text-align:center;
+        font-size:1.6em;
+        cursor:pointer;
+        }
+        @mixin alert($name,$bgColor){
+        $accentColor:darken($bgColor,50);
+        .#{$name}{
+            background-color:#{$bgColor};
+            border-left:5px solid $accentColor;
+            .close{
+            border-color:$accentColor;
+            color:$accentColor;
+            }
+        }
+        }
+        @include alert(simple-alert,#ebebeb);
+        @include alert(success-alert,#a8f0c6);
+        @include alert(danger-alert,#f7a7a3);
+        @include alert(warning-alert,#ffd48a);
         
-
-
     </style>
 </head>
 
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}" id="msg" role="alert">
+            <h3>{{ message }}</h3>
+            </div>
+        {% endfor %}
+    {% endif %} 
 
-    <div class="container">
-        {% block content %} {% endblock content %}
+    <div id="wrapper">
+        <div class="container">
+            {% block content %} {% endblock content %}
+        </div>
     </div>
+
+    <script>
+        setTimeout(function(){
+            if ($('#msg').length> 0){
+                $('#msg').remove();
+            }
+        }, 1000)
+    </script>
+
+    <script>
+        $(".close").click(function() {
+            $(this)
+              .parent(".alert")
+              .fadeOut();
+          });
+    </script> 
 
 </body>
 
